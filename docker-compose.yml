@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: pml_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: pml_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  s3rver:
+    image: adrianrudnik/s3rver:latest
+    container_name: pml_s3
+    ports:
+      - "9000:9000"
+    volumes:
+      - s3_data:/data
+    environment:
+      DEBUG: s3rver
+
+  app:
+    build: .
+    container_name: pml_app
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://admin:password@mongodb:27017/paid-media-locker?authSource=admin
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: s3rver
+      AWS_SECRET_ACCESS_KEY: s3rver
+      S3_BUCKET_NAME: paid-media-locker
+      S3_USE_LOCAL: true
+      REDIS_URL: redis://redis:6379
+      PORT: 5000
+      CORS_ORIGIN: http://localhost:3000,http://localhost:8081
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      s3rver:
+        condition: service_started
+    volumes:
+      - ./server:/app/server
+      - ./scripts:/app/scripts
+    command: npm run dev
+
+volumes:
+  mongodb_data:
+  s3_data:
