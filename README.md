@@ -22,7 +22,7 @@ A secure, decentralized media marketplace with blockchain-inspired immutable tra
 - **SQL Injection Protection**: Parameterized queries and input validation
 - **Audit Logging**: Complete audit trail for sensitive operations
 - **CORS Protection**: Configurable cross-origin resource sharing
-
+- 
 ### Advanced Features
 - **Image Processing**: Automatic thumbnail and preview generation
 - **Pagination**: Efficient data fetching with configurable page sizes
