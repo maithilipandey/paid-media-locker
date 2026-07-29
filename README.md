@@ -12,7 +12,7 @@ A secure, decentralized media marketplace with blockchain-inspired immutable tra
 - **Feed Discovery**: Algorithm-driven content discovery and recommendations
 - **Social Features**: Follow creators and interact with their content
 - **User Profiles**: Customizable creator profiles with media galleries
-- 
+  
 ### Security Features
 - **Immutable Transaction Records**: Blockchain-inspired SHA-256 hashing for transactions
 - **Secure File Storage**: AES-256 encryption for media files in S3
@@ -22,7 +22,7 @@ A secure, decentralized media marketplace with blockchain-inspired immutable tra
 - **SQL Injection Protection**: Parameterized queries and input validation
 - **Audit Logging**: Complete audit trail for sensitive operations
 - **CORS Protection**: Configurable cross-origin resource sharing
-- 
+  
 ### Advanced Features
 - **Image Processing**: Automatic thumbnail and preview generation
 - **Pagination**: Efficient data fetching with configurable page sizes
